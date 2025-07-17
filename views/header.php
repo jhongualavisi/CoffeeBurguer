@@ -45,3 +45,4 @@ if (session_status() === PHP_SESSION_NONE) {
         <img src="../public/logo.jpg" alt="Coffee Burguer" class="logo">
     </div>
 </div>
+ <!-- primer coambio con git -->
