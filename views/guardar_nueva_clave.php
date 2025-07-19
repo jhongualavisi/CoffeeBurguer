@@ -56,10 +56,10 @@ if (isset($_POST['nueva_clave']) && isset($_SESSION['usuario_recuperado_email'])
     <h4 class="mb-4">Restablecer contraseña</h4>
 
     <?php if ($clave_actualizada): ?>
-        <div class="alert alert-success">✅ Contraseña actualizada correctamente.</div>
+        <div class="alert alert-success"> Contraseña actualizada correctamente.</div>
         <a href="login.php" class="btn btn-primary w-100 mt-3">Iniciar sesión</a>
     <?php elseif ($error): ?>
-        <div class="alert alert-danger">❌ No se pudo actualizar la contraseña.</div>
+        <div class="alert alert-danger"> No se pudo actualizar la contraseña.</div>
         <a href="login.php" class="btn btn-secondary w-100 mt-3">Volver al login</a>
     <?php elseif (isset($_SESSION['usuario_recuperado_email'])): ?>
         <form method="POST">
@@ -70,7 +70,7 @@ if (isset($_POST['nueva_clave']) && isset($_SESSION['usuario_recuperado_email'])
             <button type="submit" class="btn btn-warning w-100">Guardar nueva contraseña</button>
         </form>
     <?php else: ?>
-        <div class="alert alert-danger">❌ Faltan datos para cambiar la contraseña.</div>
+        <div class="alert alert-danger"> Faltan datos para cambiar la contraseña.</div>
         <a href="login.php" class="btn btn-secondary w-100 mt-3">Volver al login</a>
     <?php endif; ?>
 </div>

@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include 'header.php'; ?>
 <div class="container">
     <div class="card p-4 mb-4">
-        <h2 class="text-center mb-3">📊 Reporte de Productos Más Vendidos</h2>
+        <h2 class="text-center mb-3"> Reporte de Productos Más Vendidos</h2>
 
         <!-- Formulario de fechas -->
         <form method="POST" class="row g-3 justify-content-center">
@@ -100,13 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row">
             <div class="col-md-6 mb-4">
                 <div class="card p-3">
-                    <h5 class="text-center">📈 Total vendido por producto</h5>
+                    <h5 class="text-center"> Total vendido por producto</h5>
                     <canvas id="graficoTotal" height="300"></canvas>
                 </div>
             </div>
             <div class="col-md-6 mb-4">
                 <div class="card p-3">
-                    <h5 class="text-center">📦 Unidades vendidas por producto</h5>
+                    <h5 class="text-center"> Unidades vendidas por producto</h5>
                     <canvas id="graficoUnidades" height="300"></canvas>
                 </div>
             </div>
@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </script>
 
     <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
-        <div class="alert alert-warning mt-4">⚠️ No se encontraron resultados en ese rango de fechas.</div>
+        <div class="alert alert-warning mt-4"> No se encontraron resultados en ese rango de fechas.</div>
     <?php endif; ?>
 
     <div class="text-center mt-4">

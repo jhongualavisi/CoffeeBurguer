@@ -74,7 +74,7 @@ if (!isset($_SESSION['usuario'])) {
     <!-- Mensaje de éxito -->
     <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'venta_exitosa'): ?>
         <div class="alert alert-success text-center">
-            ✅ ¡Venta registrada con éxito!
+             ¡Venta registrada con éxito!
         </div>
     <?php endif; ?>
 
@@ -174,6 +174,27 @@ if (!isset($_SESSION['usuario'])) {
                     </div>
                 </a>
             </div>
+            <div class="col">
+                <a href="insumos.php" class="text-decoration-none">
+                     <div class="card card-option text-center">
+                        <div class="card-body">
+                            <i class="fas fa-boxes-stacked"></i>
+                            <h5 class="card-title">Inventario</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="definir_receta.php" class="text-decoration-none">
+                    <div class="card card-option text-center">
+                        <div class="card-body">
+                            <i class="fas fa-utensils"></i>
+                            <h5 class="card-title">Definir Recetas</h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
         <?php endif; ?>
 
         <div class="col">

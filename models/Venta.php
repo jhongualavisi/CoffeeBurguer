@@ -16,29 +16,56 @@ class Venta {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    //  Registrar un nuevo pedido con productos
-    public function registrarPedido($usuario_id, $medio_pago, $total, $productos) {
-        $this->conn->beginTransaction();
+ // Registrar un nuevo pedido con productos y descontar inventario
+public function registrarPedido($usuario_id, $medio_pago, $total, $productos) {
+    $this->conn->beginTransaction();
 
-        $stmt = $this->conn->prepare("INSERT INTO pedidos (usuario_id, medio_pago, total) VALUES (?, ?, ?)");
-        $stmt->execute([$usuario_id, $medio_pago, $total]);
+    // 1. Registrar el pedido
+    $stmt = $this->conn->prepare("INSERT INTO pedidos (usuario_id, medio_pago, total) VALUES (?, ?, ?)");
+    $stmt->execute([$usuario_id, $medio_pago, $total]);
+    $pedido_id = $this->conn->lastInsertId();
 
-        $pedido_id = $this->conn->lastInsertId();
+    // 2. Registrar detalles del pedido
+    $stmtDetalle = $this->conn->prepare("INSERT INTO pedido_detalle (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
 
-        $stmtDetalle = $this->conn->prepare("INSERT INTO pedido_detalle (pedido_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)");
+    foreach ($productos as $producto) {
+        $stmtDetalle->execute([
+            $pedido_id,
+            $producto['id'],
+            $producto['cantidad'],
+            $producto['precio']
+        ]);
+    }
 
-        foreach ($productos as $producto) {
-            $stmtDetalle->execute([
-                $pedido_id,
-                $producto['id'],
-                $producto['cantidad'],
-                $producto['precio']
+    // 3. Descontar insumos del inventario según la receta de cada producto
+    require_once __DIR__ . '/Receta.php';
+    $recetaModel = new Receta();
+
+    foreach ($productos as $producto) {
+        $producto_id = $producto['id'];
+        $cantidad_vendida = $producto['cantidad'];
+
+        // Obtener receta del producto
+        $receta = $recetaModel->obtenerPorProducto($producto_id);
+
+        foreach ($receta as $componente) {
+            $insumo_id = $componente['insumo_id'];
+            $cantidad_usada = $componente['cantidad'] * $cantidad_vendida;
+
+            // Descontar del inventario
+            $stmtDescuento = $this->conn->prepare("UPDATE insumos SET stock_actual = stock_actual - :cantidad WHERE id = :id");
+            $stmtDescuento->execute([
+                ':cantidad' => $cantidad_usada,
+                ':id' => $insumo_id
             ]);
         }
-
-        $this->conn->commit();
-        return true;
     }
+
+    // Finalizar la transacción
+    $this->conn->commit();
+    return true;
+}
+
 
     //  Reporte de productos más vendidos entre fechas
     public function reporteProductosVendidos($desde, $hasta) {

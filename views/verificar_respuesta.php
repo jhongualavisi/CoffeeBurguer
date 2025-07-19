@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: guardar_nueva_clave.php");
         exit();
     } else {
-        echo "❌ Acceso no autorizado. Las respuestas no coinciden.";
+        echo " Acceso no autorizado. Las respuestas no coinciden.";
         echo "<br><a href='login.php'>Volver al login</a>";
         session_destroy();
         exit();

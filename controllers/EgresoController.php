@@ -26,10 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['usuario_id'])) {
         }
 
         if ($egreso->registrar($descripcion, $monto, $medio_pago, $imagen, $usuario_id)) {
-            header("Location: ../views/egresos.php?exito=1");
+            header("Location: ../views/egresos.php?mensaje=creado");
             exit();
         } else {
-            header("Location: ../views/egresos.php?error=1");
+            header("Location: ../views/egresos.php?mensaje=error");
             exit();
         }
     }
@@ -53,7 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['usuario_id'])) {
         }
 
         $egreso->actualizar($id, $descripcion, $monto, $medio_pago, $imagen);
-        header("Location: ../views/egresos.php?mensaje=actualizado");
+
+        // ✅ Redirigir con mensaje de éxito
+        header("Location: ../views/ver_egresos.php?mensaje=actualizado");
         exit();
     }
 }

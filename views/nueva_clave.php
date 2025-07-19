@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['permitido_cambiar']) || !$_SESSION['usuario_recuperado_email']) {
-    echo "⚠️ Acceso no autorizado.";
+    echo " Acceso no autorizado.";
     echo "<br><a href='login.php'>Volver</a>";
     exit();
 }
@@ -16,7 +16,7 @@ if (!isset($_SESSION['permitido_cambiar']) || !$_SESSION['usuario_recuperado_ema
 </head>
 <body>
 
-<h2>🔐 Ingresa tu nueva contraseña</h2>
+<h2> Ingresa tu nueva contraseña</h2>
 
 <form action="../controllers/CambiarClaveController.php" method="POST">
     <label>Nueva contraseña:</label><br>

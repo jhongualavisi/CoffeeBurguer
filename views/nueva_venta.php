@@ -44,9 +44,9 @@ $productos = $venta->obtenerProductos();
 <body>
 
 <div class="container">
-    <h2 class="mb-4 text-center">🧾 Nuevo Pedido</h2>
+    <h2 class="mb-4 text-center"> Nuevo Pedido</h2>
 
-    <h4 class="mb-3">🍔 Menú de Productos</h4>
+    <h4 class="mb-3"> Menú de Productos</h4>
     <div class="scrollable-menu mb-4 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <?php foreach ($productos as $prod): ?>
             <div class="col">
@@ -61,7 +61,7 @@ $productos = $venta->obtenerProductos();
         <?php endforeach; ?>
     </div>
 
-    <h4 class="mb-3">🧾 Resumen del Pedido</h4>
+    <h4 class="mb-3"> Resumen del Pedido</h4>
     <form action="../controllers/VentaController.php" method="POST" onsubmit="return validarEnvio()">
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle text-center" id="tablaResumen">
@@ -78,7 +78,7 @@ $productos = $venta->obtenerProductos();
             </table>
         </div>
 
-        <p class="fs-5">💰 <strong>Total: $<span id="total">0.00</span></strong></p>
+        <p class="fs-5"> <strong>Total: $<span id="total">0.00</span></strong></p>
 
         <div class="mb-3">
             <label class="form-label">Método de pago:</label>
@@ -92,7 +92,7 @@ $productos = $venta->obtenerProductos();
         <input type="hidden" name="productos" id="productos">
         <input type="hidden" name="total" id="total_hidden">
 
-        <button type="submit" class="btn btn-success">💾 Guardar venta</button>
+        <button type="submit" class="btn btn-success"> Guardar venta</button>
         <a href="dashboard.php" class="btn btn-secondary ms-2">⬅ Volver al panel</a>
     </form>
 </div>
@@ -111,9 +111,18 @@ function agregarProducto(id, nombre, precio) {
 }
 
 function editarCantidad(index, cantidad) {
-    productos[index].cantidad = parseInt(cantidad);
+    const cantidadInt = parseInt(cantidad);
+
+    if (isNaN(cantidadInt) || cantidadInt < 1 || cantidadInt > 999) {
+        alert("La cantidad debe ser un número entre 1 y 999.");
+        renderTabla(); // restaurar valores previos
+        return;
+    }
+
+    productos[index].cantidad = cantidadInt;
     renderTabla();
 }
+
 
 function eliminarProducto(index) {
     productos.splice(index, 1);
@@ -133,7 +142,12 @@ function renderTabla() {
             <tr>
                 <td>${p.nombre}</td>
                 <td>
-                    <input type="number" min="1" class="form-control form-control-sm text-center" value="${p.cantidad}" onchange="editarCantidad(${index}, this.value)">
+                    <input type="number" min="1" max="999" step="1" 
+                    class="form-control form-control-sm text-center" 
+                    value="${p.cantidad}" 
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);" 
+                    onchange="editarCantidad(${index}, this.value)">
+
                 </td>
                 <td>$${p.precio.toFixed(2)}</td>
                 <td>$${subtotal.toFixed(2)}</td>

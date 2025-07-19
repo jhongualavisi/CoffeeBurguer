@@ -18,11 +18,11 @@ if ($email) {
         header("Location: pregunta_seguridad.php");
         exit();
     } else {
-        echo "❌ El correo ya no existe en el sistema.";
+        echo " El correo ya no existe en el sistema.";
         echo "<br><a href='login.php'>Volver al login</a>";
         exit();
     }
 } else {
-    echo "❌ No hay información previa del correo.";
+    echo " No hay información previa del correo.";
     echo "<br><a href='login.php'>Volver al login</a>";
 }

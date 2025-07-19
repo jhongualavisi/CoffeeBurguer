@@ -70,15 +70,15 @@ $productos = $producto->obtenerTodos();
     <?php if (isset($_GET['msg'])): ?>
         <div class="alert alert-success text-center alert-msg">
             <?php
-                if ($_GET['msg'] === 'creado') echo "✅ Producto creado con éxito.";
-                if ($_GET['msg'] === 'actualizado') echo "✏️ Producto actualizado.";
-                if ($_GET['msg'] === 'eliminado') echo "🗑️ Producto eliminado.";
+                if ($_GET['msg'] === 'creado') echo "Producto creado con éxito.";
+                if ($_GET['msg'] === 'actualizado') echo "Producto actualizado.";
+                if ($_GET['msg'] === 'eliminado') echo " Producto eliminado.";
             ?>
         </div>
     <?php endif; ?>
 
     <div class="text-center">
-        <a href="form_producto.php" class="btn btn-primary btn-nuevo">➕ Nuevo producto</a>
+        <a href="form_producto.php" class="btn btn-primary btn-nuevo"> Nuevo producto</a>
     </div>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mt-3">

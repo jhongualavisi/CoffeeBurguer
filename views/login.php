@@ -47,10 +47,10 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
     <h3 class="mb-4">Iniciar sesión</h3>
 
     <?php if ($error === 'clave'): ?>
-        <div class="alert alert-danger py-2">❌ Contraseña incorrecta</div>
+        <div class="alert alert-danger py-2"> Contraseña incorrecta</div>
         <a href="recuperar.php" class="d-block mb-2">¿Olvidaste tu contraseña?</a>
     <?php elseif ($error === 'usuario'): ?>
-        <div class="alert alert-danger py-2">❌ Usuario no encontrado</div>
+        <div class="alert alert-danger py-2"> Usuario no encontrado</div>
         <a href="recuperar_correo.php" class="d-block mb-2">¿Olvidaste tu correo?</a>
     <?php endif; ?>
 
@@ -58,7 +58,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : '';
         <div class="mb-3 text-start">
             <label for="email" class="form-label">Correo electrónico</label>
             <input type="email" name="email" id="email" class="form-control" value="<?php echo $email_guardado; ?>" required>
-            <div id="emailError" class="form-text text-danger d-none">❌ Ingresa un correo electrónico válido.</div>
+            <div id="emailError" class="form-text text-danger d-none"> Ingresa un correo electrónico válido.</div>
         </div>
 
         <div class="mb-3 text-start">

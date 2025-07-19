@@ -53,7 +53,7 @@ if (!isset($_SESSION['rol']) || !in_array($_SESSION['rol'], ['admin', 'cajero'])
 
 <div class="container">
     <div class="form-container">
-        <h2 class="text-center">📤 Registrar Egreso</h2>
+        <h2 class="text-center"> Registrar Egreso</h2>
 
         <form action="../controllers/EgresoController.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="accion" value="crear">
