@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="container">
     <div class="container-box">
-        <h2 class="text-center mb-4">📋 Listado de Egresos</h2>
+        <h2 class="text-center mb-4"> Listado de Egresos</h2>
 
         <!-- Formulario de filtro -->
         <form method="POST" class="row g-3 mb-4 justify-content-center">
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <!-- Resultados -->
         <?php if (count($egresos) === 0): ?>
-            <div class="alert alert-warning text-center">⚠️ No se encontraron egresos.</div>
+            <div class="alert alert-warning text-center"> No se encontraron egresos.</div>
         <?php else: ?>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered align-middle">

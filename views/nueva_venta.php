@@ -12,117 +12,158 @@ $productos = $venta->obtenerProductos();
     <meta charset="UTF-8">
     <title>Nueva Venta</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         body {
             background: linear-gradient(135deg, #f8f9fa, #ffe0b2);
             min-height: 100vh;
             padding: 20px;
         }
-
-        .scrollable-menu {
-            max-height: 300px;
+        .tabla-productos {
+            height: 75vh;
             overflow-y: auto;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
+        }
+        .resumen-box {
+            background: #fff;
             padding: 15px;
-            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: 75vh;
+            overflow-y: auto;
         }
-
-        .card-producto {
-            margin-bottom: 15px;
-        }
-
-        .card-producto .btn {
-            margin-top: 10px;
-        }
-
-        table {
-            margin-top: 30px;
+        .btn-sm {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2 class="mb-4 text-center"> Nuevo Pedido</h2>
+<div class="container-fluid">
+    <h2 class="mb-4 text-center">Nueva Venta</h2>
 
-    <h4 class="mb-3"> Menú de Productos</h4>
-    <div class="scrollable-menu mb-4 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <?php foreach ($productos as $prod): ?>
-            <div class="col">
-                <div class="card card-producto shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title"><?= htmlspecialchars($prod['nombre']) ?></h5>
-                        <p class="card-text text-success fw-bold">$<?= number_format($prod['precio'], 2) ?></p>
-                        <button class="btn btn-warning btn-sm" onclick="agregarProducto(<?= $prod['id'] ?>, '<?= htmlspecialchars($prod['nombre']) ?>', <?= $prod['precio'] ?>)">Agregar</button>
-                    </div>
-                </div>
+    <div class="row">
+        <!-- Lista de productos -->
+        <div class="col-md-7">
+            <h5>Menú de Productos</h5>
+            <div class="table-responsive tabla-productos">
+                <table class="table table-sm table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($productos as $prod): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($prod['nombre']) ?></td>
+                                <td class="text-success fw-bold">$<?= number_format($prod['precio'], 2) ?></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        onclick="agregarProducto(<?= $prod['id'] ?>, '<?= htmlspecialchars($prod['nombre']) ?>', <?= $prod['precio'] ?>)">
+                                         Agregar
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
-        <?php endforeach; ?>
+        </div>
+
+        <!-- Resumen del pedido -->
+        <div class="col-md-5">
+            <div class="resumen-box">
+                <h5>Resumen del Pedido</h5>
+                <form action="../controllers/VentaController.php" method="POST" onsubmit="return validarEnvio()">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered text-center align-middle" id="tablaResumen">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cant.</th>
+                                    <th>Subtotal</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <p class="fs-6"><strong>Total: $<span id="total">0.00</span></strong></p>
+
+                    <div class="mb-2">
+                        <label class="form-label">Método de pago:</label>
+                        <select name="medio_pago" class="form-select form-select-sm" required>
+                            <option value="">Seleccione</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="transferencia">Transferencia</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="productos" id="productos">
+                    <input type="hidden" name="total" id="total_hidden">
+
+                    <button type="submit" class="btn btn-success btn-sm"> Guardar venta</button>
+                    <a href="dashboard.php" class="btn btn-outline-secondary btn-sm">⬅ Volver</a>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <h4 class="mb-3"> Resumen del Pedido</h4>
-    <form action="../controllers/VentaController.php" method="POST" onsubmit="return validarEnvio()">
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle text-center" id="tablaResumen">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                        <th>Subtotal</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
-
-        <p class="fs-5"> <strong>Total: $<span id="total">0.00</span></strong></p>
-
-        <div class="mb-3">
-            <label class="form-label">Método de pago:</label>
-            <select name="medio_pago" class="form-select" required>
-                <option value="">Seleccione</option>
-                <option value="efectivo">Efectivo</option>
-                <option value="transferencia">Transferencia</option>
-            </select>
-        </div>
-
-        <input type="hidden" name="productos" id="productos">
-        <input type="hidden" name="total" id="total_hidden">
-
-        <button type="submit" class="btn btn-success"> Guardar venta</button>
-        <a href="dashboard.php" class="btn btn-secondary ms-2">⬅ Volver al panel</a>
-    </form>
 </div>
 
 <script>
 let productos = [];
 
 function agregarProducto(id, nombre, precio) {
-    const existente = productos.find(p => p.id === id);
-    if (existente) {
-        existente.cantidad++;
-    } else {
-        productos.push({ id, nombre, precio, cantidad: 1 });
-    }
-    renderTabla();
+    fetch(`../controllers/VentaController.php?verificar_stock=${id}`)
+        .then(res => res.json())
+        .then(data => {
+            const maximo = data.maximo_permitido;
+            const faltantes = data.faltantes;
+
+            const existente = productos.find(p => p.id === id);
+
+            if (existente) {
+                if (existente.cantidad + 1 > maximo) {
+                    alert(`Solo puedes agregar hasta ${maximo} unidades de ${nombre}. Faltan insumos:\n- ${faltantes.join("\n- ")}`);
+                    return;
+                }
+                existente.cantidad++;
+            } else {
+                if (maximo < 1) {
+                    alert(`No hay stock suficiente para vender '${nombre}'. Faltan insumos:\n- ${faltantes.join("\n- ")}`);
+                    return;
+                }
+                productos.push({ id, nombre, precio, cantidad: 1 });
+            }
+
+            renderTabla();
+        })
+        .catch(err => {
+            console.error("Error al verificar stock:", err);
+            alert("No se pudo verificar el inventario. Intenta de nuevo.");
+        });
 }
+
 
 function editarCantidad(index, cantidad) {
     const cantidadInt = parseInt(cantidad);
+    if (isNaN(cantidadInt) || cantidadInt < 1) return;
 
-    if (isNaN(cantidadInt) || cantidadInt < 1 || cantidadInt > 999) {
-        alert("La cantidad debe ser un número entre 1 y 999.");
-        renderTabla(); // restaurar valores previos
-        return;
-    }
-
-    productos[index].cantidad = cantidadInt;
-    renderTabla();
+    const producto = productos[index];
+    $.getJSON('../controllers/VentaController.php', { verificar_stock: producto.id }, function(respuesta) {
+        if (cantidadInt > respuesta.maximo_permitido) {
+            alert("Solo puedes vender " + respuesta.maximo_permitido + " unidades. Faltan insumos.");
+            productos[index].cantidad = respuesta.maximo_permitido;
+        } else {
+            productos[index].cantidad = cantidadInt;
+        }
+        renderTabla();
+    });
 }
-
 
 function eliminarProducto(index) {
     productos.splice(index, 1);
@@ -142,16 +183,16 @@ function renderTabla() {
             <tr>
                 <td>${p.nombre}</td>
                 <td>
-                    <input type="number" min="1" max="999" step="1" 
-                    class="form-control form-control-sm text-center" 
-                    value="${p.cantidad}" 
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);" 
-                    onchange="editarCantidad(${index}, this.value)">
-
+                    <input type="number" min="1" max="999"
+                        class="form-control form-control-sm text-center"
+                        value="${p.cantidad}"
+                        onchange="editarCantidad(${index}, this.value)">
                 </td>
-                <td>$${p.precio.toFixed(2)}</td>
                 <td>$${subtotal.toFixed(2)}</td>
-                <td><button type="button" class="btn btn-sm btn-danger" onclick="eliminarProducto(${index})">❌</button></td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-danger"
+                        onclick="eliminarProducto(${index})">🗑️</button>
+                </td>
             </tr>
         `;
     });
@@ -163,7 +204,7 @@ function renderTabla() {
 
 function validarEnvio() {
     if (productos.length === 0) {
-        alert("Debes agregar al menos un producto.");
+        alert("Agrega al menos un producto.");
         return false;
     }
     return true;

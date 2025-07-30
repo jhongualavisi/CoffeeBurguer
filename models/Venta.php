@@ -11,7 +11,7 @@ class Venta {
 
     //  Obtener productos para el menú
     public function obtenerProductos() {
-        $stmt = $this->conn->prepare("SELECT * FROM productos");
+        $stmt = $this->conn->prepare("SELECT * FROM productos WHERE estado = 'activo'");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -65,6 +65,33 @@ public function registrarPedido($usuario_id, $medio_pago, $total, $productos) {
     $this->conn->commit();
     return true;
 }
+
+ // Verificar si hay stock suficiente para una cantidad de un producto
+ public function verificarStockDisponible($producto_id, $cantidad_deseada) {
+    $query = "
+        SELECT r.insumo_id, i.nombre, r.cantidad AS cantidad_necesaria, i.stock_actual
+        FROM recetas r
+        JOIN insumos i ON r.insumo_id = i.id
+        WHERE r.producto_id = ?";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute([$producto_id]);
+    $insumos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $faltantes = [];
+    foreach ($insumos as $i) {
+        $cantidad_total = $i['cantidad_necesaria'] * $cantidad_deseada;
+        if ($cantidad_total > $i['stock_actual']) {
+            $faltantes[] = [
+                'insumo' => $i['nombre'],
+                'necesita' => $cantidad_total,
+                'disponible' => $i['stock_actual']
+            ];
+        }
+    }
+
+    return $faltantes;
+}
+
 
 
     //  Reporte de productos más vendidos entre fechas

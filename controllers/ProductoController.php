@@ -1,35 +1,31 @@
 <?php
-session_start();
 require_once __DIR__ . '/../models/Producto.php';
+session_start();
 
 $producto = new Producto();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $accion = $_POST['accion'];
+    $nombre = $_POST['nombre'];
+    $precio = $_POST['precio'];
 
-    if ($accion === 'crear') {
-        $nombre = $_POST['nombre'];
-        $precio = $_POST['precio'];
-
+    if (isset($_POST['id'])) {
+        $producto->actualizar($_POST['id'], $nombre, $precio);
+    } else {
         $producto->crear($nombre, $precio);
-        header("Location: ../views/productos.php?msg=creado");
-        exit();
     }
 
-    if ($accion === 'actualizar') {
-        $id = $_POST['id'];
-        $nombre = $_POST['nombre'];
-        $precio = $_POST['precio'];
-
-        $producto->actualizar($id, $nombre, $precio);
-        header("Location: ../views/productos.php?msg=actualizado");
-        exit();
-    }
+    header('Location: ../views/productos.php');
+    exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['eliminar'])) {
-    $id = $_GET['eliminar'];
-    $producto->eliminar($id);
-    header("Location: ../views/productos.php?msg=eliminado");
+if (isset($_GET['desactivar'])) {
+    $producto->cambiarEstado($_GET['desactivar'], 'inactivo');
+    header('Location: ../views/productos.php');
+    exit();
+}
+
+if (isset($_GET['activar'])) {
+    $producto->cambiarEstado($_GET['activar'], 'activo');
+    header('Location: ../views/productos.php');
     exit();
 }

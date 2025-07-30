@@ -9,8 +9,16 @@ class Producto {
         $this->conn = $db->connect();
     }
 
+    // Obtener todos los productos
     public function obtenerTodos() {
         $stmt = $this->conn->query("SELECT * FROM productos ORDER BY nombre");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Obtener productos activos (para venta)
+    public function obtenerActivos() {
+        $stmt = $this->conn->prepare("SELECT * FROM productos WHERE estado = 'activo' ORDER BY nombre");
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -21,7 +29,7 @@ class Producto {
     }
 
     public function crear($nombre, $precio) {
-        $stmt = $this->conn->prepare("INSERT INTO productos (nombre, precio) VALUES (?, ?)");
+        $stmt = $this->conn->prepare("INSERT INTO productos (nombre, precio, estado) VALUES (?, ?, 'activo')");
         return $stmt->execute([$nombre, $precio]);
     }
 
@@ -30,6 +38,13 @@ class Producto {
         return $stmt->execute([$nombre, $precio, $id]);
     }
 
+    // En lugar de eliminar, cambiamos el estado
+    public function cambiarEstado($id, $nuevoEstado) {
+        $stmt = $this->conn->prepare("UPDATE productos SET estado = ? WHERE id = ?");
+        return $stmt->execute([$nuevoEstado, $id]);
+    }
+
+    // Si aún quieres eliminar físicamente un producto (NO recomendado)
     public function eliminar($id) {
         $stmt = $this->conn->prepare("DELETE FROM productos WHERE id = ?");
         return $stmt->execute([$id]);

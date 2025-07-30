@@ -42,6 +42,25 @@ $insumos = $insumo->obtenerTodos();
 <body>
 
 <div class="container">
+
+    <!-- ALERTAS DE MENSAJE -->
+    <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'eliminado'): ?>
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            ✅ Insumo eliminado correctamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php elseif (isset($_GET['error']) && $_GET['error'] === 'relacionado'): ?>
+        <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+            ⚠️ No se puede eliminar el insumo porque está relacionado con una <strong>receta</strong> o <strong>entrada registrada</strong>.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php elseif (isset($_GET['error']) && $_GET['error'] === 'general'): ?>
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+            ❌ Ocurrió un error inesperado al intentar eliminar el insumo.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+
     <div class="text-center mb-4">
         <h2><i class="bi bi-boxes"></i> Inventario de Insumos</h2>
     </div>
@@ -104,6 +123,9 @@ $insumos = $insumo->obtenerTodos();
         </a>
     </div>
 </div>
+
+<!-- Bootstrap JS para alertas -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

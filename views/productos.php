@@ -12,6 +12,7 @@ $productos = $producto->obtenerTodos();
     <meta charset="UTF-8">
     <title>Gestión de Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(to right, #ffecd2, #fcb69f);
@@ -41,9 +42,17 @@ $productos = $producto->obtenerTodos();
             color: white;
         }
 
-        .btn-eliminar {
-            background-color: #dc3545;
+        .btn-cambiar-estado {
+            background-color: #6c757d;
             color: white;
+        }
+
+        .btn-cambiar-estado.activo {
+            background-color: #dc3545; /* rojo para desactivar */
+        }
+
+        .btn-cambiar-estado.inactivo {
+            background-color: #198754; /* verde para activar */
         }
 
         .btn-nuevo {
@@ -65,20 +74,24 @@ $productos = $producto->obtenerTodos();
 <?php include 'header.php'; ?>
 
 <div class="container">
-    <h2 class="mb-4 titulo text-center">🛒 Productos Disponibles</h2>
+    <h2 class="mb-4 titulo text-center"> Productos Disponibles</h2>
 
     <?php if (isset($_GET['msg'])): ?>
         <div class="alert alert-success text-center alert-msg">
             <?php
                 if ($_GET['msg'] === 'creado') echo "Producto creado con éxito.";
                 if ($_GET['msg'] === 'actualizado') echo "Producto actualizado.";
-                if ($_GET['msg'] === 'eliminado') echo " Producto eliminado.";
+                if ($_GET['msg'] === 'eliminado') echo "Producto eliminado.";
+                if ($_GET['msg'] === 'activado') echo "Producto activado.";
+                if ($_GET['msg'] === 'desactivado') echo "Producto desactivado.";
             ?>
         </div>
     <?php endif; ?>
 
     <div class="text-center">
-        <a href="form_producto.php" class="btn btn-primary btn-nuevo"> Nuevo producto</a>
+        <a href="form_producto.php" class="btn btn-primary btn-nuevo">
+            <i class="bi bi-plus-circle-fill"></i> Nuevo producto
+        </a>
     </div>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mt-3">
@@ -88,12 +101,33 @@ $productos = $producto->obtenerTodos();
                     <div class="card-body text-center">
                         <h5 class="card-title"><?= htmlspecialchars($p['nombre']) ?></h5>
                         <p class="card-text fw-bold text-success">$<?= number_format($p['precio'], 2) ?></p>
+                        <p class="mb-0">
+                            Estado:
+                            <?php if ($p['estado'] === 'activo'): ?>
+                                <span class="badge bg-success">Activo</span>
+                            <?php else: ?>
+                                <span class="badge bg-secondary">Inactivo</span>
+                            <?php endif; ?>
+                        </p>
                     </div>
                     <div class="card-footer d-flex justify-content-around">
-                        <a href="form_producto.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-editar">📝 Editar</a>
-                        <a href="../controllers/ProductoController.php?eliminar=<?= $p['id'] ?>"
-                           class="btn btn-sm btn-eliminar"
-                           onclick="return confirm('¿Eliminar este producto?')">🗑️ Eliminar</a>
+                        <a href="form_producto.php?id=<?= $p['id'] ?>" class="btn btn-sm btn-editar">
+                             Editar
+                        </a>
+
+                        <?php if ($p['estado'] === 'activo'): ?>
+                            <a href="../controllers/ProductoController.php?desactivar=<?= $p['id'] ?>"
+                               class="btn btn-sm btn-cambiar-estado activo"
+                               onclick="return confirm('¿Desactivar este producto?')">
+                                 Desactivar
+                            </a>
+                        <?php else: ?>
+                            <a href="../controllers/ProductoController.php?activar=<?= $p['id'] ?>"
+                               class="btn btn-sm btn-cambiar-estado inactivo"
+                               onclick="return confirm('¿Activar este producto?')">
+                                 Activar
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -101,7 +135,9 @@ $productos = $producto->obtenerTodos();
     </div>
 
     <div class="text-center mt-4">
-        <a href="dashboard.php" class="btn btn-secondary">⬅ Volver al panel</a>
+        <a href="dashboard.php" class="btn btn-secondary">
+            ⬅ Volver al panel
+        </a>
     </div>
 </div>
 

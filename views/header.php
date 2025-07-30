@@ -48,7 +48,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="custom-header d-flex justify-content-between align-items-center">
         <div>
             <div class="title">Bienvenido, <?= htmlspecialchars($_SESSION['usuario']) ?></div>
-            <div class="rol">Rol: <strong><?= htmlspecialchars($_SESSION['rol']) ?></strong></div>
+           
         </div>
         <img src="../public/logo.jpg" alt="Coffee Burguer" class="logo">
     </div>

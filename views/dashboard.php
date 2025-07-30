@@ -66,7 +66,7 @@ if (!isset($_SESSION['usuario'])) {
     <div class="header-row mb-4">
         <div>
             <h2 class="fw-bold">Bienvenido, <?= htmlspecialchars($_SESSION['usuario']) ?></h2>
-            <p class="text-muted">Rol: <strong><?= htmlspecialchars($_SESSION['rol']) ?></strong></p>
+            
         </div>
         <img src="../public/logo.jpg" alt="Coffee Burguer" class="logo rounded-circle border">
     </div>
