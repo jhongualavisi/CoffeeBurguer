@@ -4,7 +4,7 @@ session_start();
 
 $receta = new Receta();
 
-// ✅ Agregar insumo a receta
+// Agregar insumo a receta
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['producto_id'], $_POST['insumo_id'], $_POST['cantidad'])) {
     $producto_id = $_POST['producto_id'];
     $insumo_id = $_POST['insumo_id'];

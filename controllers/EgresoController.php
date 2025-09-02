@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/Egreso.php';
 
 $egreso = new Egreso();
 
-// ✅ Registrar nuevo egreso
+// Registrar nuevo egreso
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['usuario_id'])) {
     $accion = $_POST['accion'] ?? 'crear';
 
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['usuario_id'])) {
         }
     }
 
-    // ✅ Actualizar egreso
+    // Actualizar egreso
     if ($accion === 'actualizar' && $_SESSION['rol'] === 'admin') {
         $id = $_POST['id'];
         $descripcion = $_POST['descripcion'];
@@ -54,13 +54,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['usuario_id'])) {
 
         $egreso->actualizar($id, $descripcion, $monto, $medio_pago, $imagen);
 
-        // ✅ Redirigir con mensaje de éxito
+        // Redirigir con mensaje de éxito
         header("Location: ../views/ver_egresos.php?mensaje=actualizado");
         exit();
     }
 }
 
-// ✅ Eliminar egreso (GET)
+// Eliminar egreso (GET)
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET['accion']) && $_GET['accion'] === 'eliminar') {
     if ($_SESSION['rol'] === 'admin' && isset($_GET['id'])) {
         $id = $_GET['id'];

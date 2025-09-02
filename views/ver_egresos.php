@@ -133,10 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td><?= htmlspecialchars($egreso['nombre_usuario']) ?></td>
                                 <?php if ($_SESSION['rol'] === 'admin'): ?>
                                     <td class="text-center">
-                                        <a href="editar_egreso.php?id=<?= $egreso['id'] ?>" class="btn btn-sm btn-outline-primary">✏️ Editar</a>
+                                        <a href="editar_egreso.php?id=<?= $egreso['id'] ?>" class="btn btn-sm btn-outline-primary"> Editar</a>
                                         <a href="../controllers/EgresoController.php?accion=eliminar&id=<?= $egreso['id'] ?>" 
                                            class="btn btn-sm btn-outline-danger"
-                                           onclick="return confirm('¿Seguro que deseas eliminar este egreso?')">🗑️ Eliminar</a>
+                                           onclick="return confirm('¿Seguro que deseas eliminar este egreso?')"> Eliminar</a>
                                     </td>
                                 <?php endif; ?>
                             </tr>
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <div class="text-center mt-4">
-            <a href="dashboard.php" class="btn btn-secondary">⬅ Volver al panel</a>
+            <a href="dashboard.php" class="btn btn-secondary"> Volver al panel</a>
         </div>
     </div>
 </div>
